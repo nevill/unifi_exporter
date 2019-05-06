@@ -1,12 +1,15 @@
-FROM alpine:latest
+FROM golang:1.12.4-alpine
 
 EXPOSE 9130
 
-RUN apk add --update --virtual build-deps go git musl-dev && \
-    go get github.com/mdlayher/unifi_exporter/cmd/unifi_exporter && \
-    mv ~/go/bin/unifi_exporter /bin/ && \
-    apk del build-deps && \
-    rm -rf /var/cache/apk/* ~/go/
+RUN apk add --update --virtual git
+
+COPY . /go/src/unifi_exporter
+WORKDIR /go/src/unifi_exporter
+
+RUN cd cmd/unifi_exporter && \
+    GO111MODULE=on go install .
 
 USER nobody
-ENTRYPOINT ["/bin/unifi_exporter"]
+EXPOSE 9130/tcp
+CMD ["unifi_exporter"]
