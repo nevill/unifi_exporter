@@ -13,7 +13,7 @@ import (
 	"time"
 
 	"github.com/mdlayher/unifi"
-	"github.com/nevill/unifi_exporter"
+	unifiexporter "github.com/nevill/unifi_exporter"
 	"github.com/prometheus/client_golang/prometheus"
 	"gopkg.in/yaml.v2"
 )
@@ -57,7 +57,7 @@ func main() {
 		}
 	}
 
-	timeout := 5*time.Second
+	timeout := 5 * time.Second
 	if to, ok := config.Unifi["timeout"]; ok {
 		timeout, err = time.ParseDuration(to)
 		if err != nil {
